@@ -17,10 +17,26 @@ use App\Http\Controllers\UserController;
 Route::get('/', function () {
     return view('main', ['title' => 'Главная']);
 });
+
+
 Route::get('/registration/', function () {
     return view('registration', ['title' => 'Регистрация']);
 });
+Route::get('/user/show/update/', function () {
+    return view('user.update', ['title' => 'Изменение данных пользователя']);
+});
+Route::get('/user/show/update_pass/', function () {
+    return view('user.update_pass', ['title' => 'Изменение пароля пользователя']);
+});
+Route::get('/user/show/delete/', function () {
+    return view('user.delete', ['title' => 'Удаление пользователя']);
+});
 
-Route::get('/users/', [UserController::class, 'index']);
-Route::post('/users/add/', [UserController::class, 'userAdd']);
+
+Route::post('/users/', [UserController::class, 'index']);
+Route::post('/user/add/', [UserController::class, 'userAdd']);
+Route::post('/user/update/', [UserController::class, 'userUpdate']);
+Route::post('/user/update_pass/', [UserController::class, 'userUpdatePass']);
+Route::post('/user/delete/', [UserController::class, 'userDelete']);
+
 

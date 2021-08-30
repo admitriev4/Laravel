@@ -3,7 +3,8 @@
 <div class="wrapper">
         <div class="auth-form">
             <p class="title-big">Войдите или зарегистрируйтесь</p>
-            <form action="" method="post">
+            <form action="/users" method="post">
+                {{ csrf_field() }}
                 <span>E-mail:  <input type="text" name="login"></span>
                 <span>Пароль:  <input type="password" name="password"></span>
                 <input type="submit" value="Авторизация" class="btn">

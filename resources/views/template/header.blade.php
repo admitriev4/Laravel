@@ -14,6 +14,12 @@
 <body>
 <div class="wrapper">
 <div class="header">
-        <span>header</span>
+        <div class="logo"></div>
+        <div class="menu">{{--@if (!empty($user))--}}
+                <a href="/user/show/update/" class="btn">Изменить данные пользователя</a>
+                <a href="/user/show/update_pass/" class="btn">Изменить пароль пользователя</a>
+                <a href="/user/show/delete/" class="btn">Удалить пользователя</a>
+            {{--@endif--}}</div>
+        <div class="user-info">@if (!empty($user)){{$user}}@endif</div>
 </div>
 </div>

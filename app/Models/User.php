@@ -114,4 +114,38 @@ class User extends Authenticatable
 
         return $req;
     }
+
+    public function updateInfo($request) {/*Ss1Ss1_21*/
+
+        $request->validate([
+            'name' => 'required|string',
+            'last_name' => 'required|string',
+            'email' => 'required|email',
+            'phone' => 'required|regex:/^\+[0-9]{11}$/',
+            'address' => 'required|string',
+
+        ]);$req = $request->all();
+        var_dump($req);
+            if ($this->userExist($request->email)) {
+                $email_verified_at = date("Y-m-d H:i:s");
+                $date = date("Y-m-d H:i:s");
+
+                $req = "zbs";
+                /*$req = DB::table('users')->update([
+                    'name' => $request->name,
+                    'last_name' => $request->last_name,
+                    'email' => $request->email,
+                    'email_verified_at' =>$email_verified_at,
+                    'phone' => $request->phone,
+                    'address' => $request->address,
+                    'remember_token' => $request->_token,
+                    'updated_at' => $date,
+                ]);*/
+            } else {
+                $req = "Пользователя с E-mail " . $request->email . " не сущесвует!";
+            }
+
+
+        return $req;
+    }
 }
