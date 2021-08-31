@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -15,24 +16,34 @@ class UserController extends Controller
     }
 
     public function index(Request $request) {
-        $auth = $this->LoginController->login($request);
-        var_dump($auth);
-        /*
-        if() {
+        $user = Auth::user();
+        if (empty($user)) {
+            $auth = $this->model->authorizationUser($request);
+            if(!is_string($auth)) {
             $users = $this->model->getList();
             return view('user.users', [
                 'title' => "Список пользователей",
                 'users' => $users
             ]);
-        }*/
+        } else {
+            return view('main', [
+                'title' => "Войдите или зарегистрируйтесь",
+                'request' => $auth,
+            ]);
+        }
+        }else {
+            $users = $this->model->getList();
+            return view('user.users', [
+                'title' => "Список пользователей",
+                'users' => $users
+            ]);
+        }
 
-
-    }
+        }
     public function userAdd(Request $request) {
         $res = $this->model->add($request);
         if(is_bool($res)) {
             $users = $this->model->getList();
-            $user = $this->model->getUser('email', $request->email);
             return view('user.users', [
                 'title' => "Список пользователей",
                 'users' => $users
@@ -47,20 +58,18 @@ class UserController extends Controller
 
     public function userUpdate(Request $request) {
         $res = $this->model->updateInfo($request);
-        var_dump($res);
-        /*if(is_bool($res)) {
+        if(is_int($res)) {
             $users = $this->model->getList();
-            $user = $this->model->getUser('email', $request->email);
             return view('user.users', [
                 'title' => "Список пользователей",
                 'users' => $users
             ]);
         } else {
-            return view('registration', [
-                'title' => "Регистрация",
+            return view('user.update', [
+                'title' => "Изменить данные пользователя",
                 'request' => $res
             ]);
-        }*/
+        }
     }
 
     /*public function userUpdatePass(Request $request) {

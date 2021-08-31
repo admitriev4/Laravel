@@ -13,25 +13,10 @@ class LoginController extends Controller
      *
      * @return Response
      */
-    public function login($request)
+    public static function login($id)
     {
-
-        $user = DB::table('users')
-            ->select('id', 'email', 'password', 'remember_token')
-            ->where('email', '=', $request->login)
-            ->get();
-        if(!$user->isEmpty()) {
-            $user = $user[0];
-            if($request->password == $user->password) {
-               $req = Auth::loginUsingId($user->id, $remember = true);
-            } else {
-                $req = "Неверный пароль!";
-            }
-        }
-        else {
-            $req = "Введите логин правильно";
-        }
-        return $req;
+        $req = Auth::loginUsingId($id, $remember = true);
+        return  $req;
     }
 
 

@@ -14,12 +14,27 @@
 <body>
 <div class="wrapper">
 <div class="header">
-        <div class="logo"></div>
-        <div class="menu">{{--@if (!empty($user))--}}
+        {{--<div class="logo"></div>--}}
+        <div class="menu">
+            @if (!empty(Auth::user()))
+                <a href="/users/" class="btn">Список пользователей</a>
                 <a href="/user/show/update/" class="btn">Изменить данные пользователя</a>
                 <a href="/user/show/update_pass/" class="btn">Изменить пароль пользователя</a>
                 <a href="/user/show/delete/" class="btn">Удалить пользователя</a>
-            {{--@endif--}}</div>
-        <div class="user-info">@if (!empty($user)){{$user}}@endif</div>
+
+                @else
+                <a href="/" class="btn">Главная</a>
+                <a href="/registration/" class="btn">Регистрация</a>
+            @endif
+
+            </div>
+        <div class="user-info">
+            @if (!empty(Auth::user()))
+                <span>{{Auth::user()->name}}
+                {{Auth::user()->last_name}} </span>
+               <span>{{Auth::user()->email}}</span>
+                <a href="/logout/" class="btn">Выйти</a>
+            @endif
+        </div>
 </div>
 </div>

@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\LoginController;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -44,13 +47,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public $id;
-    public $name;
-    public $surname;
-    public $email;
-    public $phone;
-    public $address;
-
     public function getUser($field, $value)
     {
         $user = DB::table('users')
@@ -77,6 +73,29 @@ class User extends Authenticatable
             return true;
         }
     }
+    public function authorizationUser($request) {
+        $request->validate([
+            'login' => 'required|email',
+            'password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d][^\s]{8,}$/',
+        ]);
+        $user = DB::table('users')
+            ->select('id', 'email', 'password', 'remember_token')
+            ->where('email', '=', $request->login)
+            ->get();
+        if(!$user->isEmpty()) {
+            $user = $user[0];
+            if($request->password == $user->password) { //проверка без хеша
+            /*if (Hash::check($request->password, $user->password)) {*/
+                $req = LoginController::login($user->id);
+            } else {
+                $req = "Неверный пароль!";
+            }
+        }
+        else {
+            $req = "Введите логин правильно";
+        }
+        return $req;
+    }
 
     public function add($request)
     {/*Ss1Ss1_21*/
@@ -94,17 +113,19 @@ class User extends Authenticatable
             $date = date("Y-m-d H:i:s");
             if (!$this->userExist($request->email)) {
                 $req = DB::table('users')->insert([
-                'name' => $request->name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'email_verified_at' =>$email_verified_at,
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'password' => $request->password,
-                'remember_token' => $request->_token,
-                'created_at' => $date,
-                'updated_at' => $date,
-            ]);
+                    'name' => $request->name,
+                    'last_name' => $request->last_name,
+                    'email' => $request->email,
+                    'email_verified_at' =>$email_verified_at,
+                    'phone' => $request->phone,
+                    'address' => $request->address,
+                    'password' => Hash::make($request->password),
+                    'remember_token' => $request->_token,
+                    'created_at' => $date,
+                    'updated_at' => $date,
+                ]);
+                $user = $this->getUser('email', $request->email);
+                LoginController::login($user[0]->id);
             } else {
                 $req = "Пользователь с E-mail " . $request->email . " уже сущесвует!";
             }
@@ -124,26 +145,24 @@ class User extends Authenticatable
             'phone' => 'required|regex:/^\+[0-9]{11}$/',
             'address' => 'required|string',
 
-        ]);$req = $request->all();
-        var_dump($req);
-            if ($this->userExist($request->email)) {
-                $email_verified_at = date("Y-m-d H:i:s");
-                $date = date("Y-m-d H:i:s");
-
-                $req = "zbs";
-                /*$req = DB::table('users')->update([
-                    'name' => $request->name,
-                    'last_name' => $request->last_name,
-                    'email' => $request->email,
-                    'email_verified_at' =>$email_verified_at,
-                    'phone' => $request->phone,
-                    'address' => $request->address,
-                    'remember_token' => $request->_token,
-                    'updated_at' => $date,
-                ]);*/
-            } else {
-                $req = "Пользователя с E-mail " . $request->email . " не сущесвует!";
-            }
+        ]);
+        if ($this->userExist($request->email)) {
+            $email_verified_at = date("Y-m-d H:i:s");
+            $date = date("Y-m-d H:i:s");
+            $user = Auth::user();
+            $req = DB::table('users')->where('id', "=" , $user->id)->update([
+                'name' => $request->name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'email_verified_at' =>$email_verified_at,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'remember_token' => $request->_token,
+                'updated_at' => $date,
+            ]);
+        } else {
+            $req = "Пользователя с E-mail " . $request->email . " не сущесвует!";
+        }
 
 
         return $req;

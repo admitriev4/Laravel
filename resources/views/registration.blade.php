@@ -3,7 +3,7 @@
 <div class="wrapper">
     <div class="reg-form">
         <p class="title-big">Регистрация</p>
-        <form action="/users/add" method="POST">
+        <form action="/user/add" method="POST">
             {{ csrf_field() }}
             <span>Имя: <input type="text" name="name">  <span class="red">{{$errors->first('name')}}</span></span>
             <span>Фамилия: <input type="text" name="last_name">  <span class="red">{{$errors->first('last_name')}}</span></span>
@@ -18,7 +18,7 @@
             <div class="title-small red">{{$request}}</div>
         @endif
 
-        <a href="/" class="btn">На главную</a>
+
 
 
     </div>

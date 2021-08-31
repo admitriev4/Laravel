@@ -73,6 +73,11 @@ p {
     border-radius: 10px 10px 0 0 ;
 
 }
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
 
 .footer {
     height: 10px;
@@ -115,7 +120,7 @@ p {
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    margin: 10px;
+    margin: 5px;
 
 }
 
