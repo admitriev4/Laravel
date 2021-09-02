@@ -72,41 +72,29 @@ class UserController extends Controller
         }
     }
 
-    /*public function userUpdatePass(Request $request) {
-        $res = $this->model->add($request);
-        if(is_bool($res)) {
+    public function userUpdatePass(Request $request) {
+        $res = $this->model->updatePass($request);
+
+        if(is_int($res)) {
             $users = $this->model->getList();
-            $user = $this->model->getUser('email', $request->email);
             return view('user.users', [
                 'title' => "Список пользователей",
                 'users' => $users
             ]);
         } else {
-            return view('registration', [
-                'title' => "Регистрация",
+            return view('user.update_pass', [
+                'title' => "Изменить данные пользователя",
                 'request' => $res
             ]);
         }
     }
 
-    public function userDelete(Request $request) {
-        $res = $this->model->add($request);
-
-        if(is_bool($res)) {
-            $users = $this->model->getList();
-            $user = $this->model->getUser('email', $request->email);
-
-            return view('user.users', [
-                'title' => "Список пользователей",
-                'users' => $users
+    public function userDelete() {
+        $this->model->deleteUser();
+            return view('main', [
+                'title' => "Главная",
             ]);
-        } else {
-            return view('registration', [
-                'title' => "Регистрация",
-                'request' => $res
-            ]);
-        }
-    }*/
+    }
 
 
 

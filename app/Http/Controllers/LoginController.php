@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @return Response
      */
-    public function logout()
+    public  static function logout()
     {
         Auth::logout();
 

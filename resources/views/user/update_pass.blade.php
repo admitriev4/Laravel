@@ -8,7 +8,7 @@
         <span>Старый пароль: <input type="password" name="old_password"> <span class="red">{{$errors->first('password')}}</span></span>
         <span>Пароль: <input type="password" name="password"> <span class="red">{{$errors->first('password')}}</span></span>
         <span>Повторить пароль: <input type="password" name="repeat_password">  <span class="red">{{$errors->first('repeat_password')}}</span></span>
-        <input type="submit" value="Регистрация" class="btn">
+        <input type="submit" value="Изменить" class="btn">
     </form>
 </div>
 </div>

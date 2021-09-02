@@ -37,6 +37,6 @@ Route::match(array('GET','POST'),'/users/', [UserController::class, 'index']);
 Route::post('/user/add/', [UserController::class, 'userAdd']);
 Route::post('/user/update/', [UserController::class, 'userUpdate'])->middleware('auth');
 Route::post('/user/update_pass/', [UserController::class, 'userUpdatePass'])->middleware('auth');
-Route::post('/user/delete/', [UserController::class, 'userDelete'])->middleware('auth');
+Route::get('/user/delete/', [UserController::class, 'userDelete'])->middleware('auth');
 
 

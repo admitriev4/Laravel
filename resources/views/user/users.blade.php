@@ -21,6 +21,8 @@
                 <span>{{ $user->address }}</span>
             </div>
     @endforeach
+        <div class="paginate">{{ $users->links() }}</div>
+
 </div>
 </div>
 

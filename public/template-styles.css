@@ -165,7 +165,10 @@ p {
     grid-template-columns: repeat(6,1fr);
 
 }
-
+.paginate {
+display: flex;
+    justify-content: center;
+}
 
 
 

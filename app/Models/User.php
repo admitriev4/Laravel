@@ -58,10 +58,10 @@ class User extends Authenticatable
 
     public function getList()
     {
-        $users = DB::table('users')
+        /*$users = DB::table('users')
             ->select('id', 'name', 'last_name', 'email', 'phone', 'address', 'password', 'remember_token')
-            ->get();
-
+            ->get();*/
+        $users = DB::table('users')->paginate(2);
         return $users;
     }
 
@@ -84,8 +84,7 @@ class User extends Authenticatable
             ->get();
         if(!$user->isEmpty()) {
             $user = $user[0];
-            if($request->password == $user->password) { //проверка без хеша
-            /*if (Hash::check($request->password, $user->password)) {*/
+            if (Hash::check($request->password, $user->password)) {
                 $req = LoginController::login($user->id);
             } else {
                 $req = "Неверный пароль!";
@@ -136,7 +135,7 @@ class User extends Authenticatable
         return $req;
     }
 
-    public function updateInfo($request) {/*Ss1Ss1_21*/
+    public function updateInfo($request) {
 
         $request->validate([
             'name' => 'required|string',
@@ -146,7 +145,6 @@ class User extends Authenticatable
             'address' => 'required|string',
 
         ]);
-        if ($this->userExist($request->email)) {
             $email_verified_at = date("Y-m-d H:i:s");
             $date = date("Y-m-d H:i:s");
             $user = Auth::user();
@@ -160,11 +158,42 @@ class User extends Authenticatable
                 'remember_token' => $request->_token,
                 'updated_at' => $date,
             ]);
-        } else {
-            $req = "Пользователя с E-mail " . $request->email . " не сущесвует!";
-        }
+
 
 
         return $req;
     }
+
+    public function updatePass($request) {/*Ss1Ss1_21*/
+
+        $request->validate([
+            'old_password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d][^\s]{8,}$/',
+            'password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d][^\s]{8,}$/',
+            'repeat_password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d][^\s]{8,}$/',
+
+        ]);
+        $user = Auth::user();
+        if (Hash::check($request->old_password, $user->password)) {
+        if ($request->password == $request->repeat_password) {
+            $date = date("Y-m-d H:i:s");
+            $req = DB::table('users')->where('id', "=" , $user->id)->update([
+                'password' => Hash::make($request->password),
+                'updated_at' => $date,
+            ]);
+        } else {
+        $req = "Пароли не совпадают!";
+    }
+        } else {
+            $req = "Старый пароль не верен!";
+        }
+        return $req;
+    }
+
+    public function deleteUser() {
+        $user = Auth::user();
+        DB::table('users')->where('id', '=', $user->id)->delete();
+        LoginController::logout();
+    }
+
+
 }
