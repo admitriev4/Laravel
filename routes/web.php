@@ -31,9 +31,12 @@ Route::get('/user/show/update_pass/', function () {
 Route::get('/user/show/delete/', function () {
     return view('user.delete', ['title' => 'Удаление пользователя']);
 })->middleware('auth');
+Route::get('/user/only-old/', function () {
+    return view('user.onlyOld', ['title' => 'Страница для взрослых']);
+})->middleware('checkAgeGroup');
 
 Route::get('/logout/', [LoginController::class, 'logout'])->middleware('auth');
-Route::match(array('GET','POST'),'/users/', [UserController::class, 'index']);
+Route::match(array('GET','POST'),'/users/', [UserController::class, 'index'])->name('users');
 Route::post('/user/add/', [UserController::class, 'userAdd']);
 Route::post('/user/update/', [UserController::class, 'userUpdate'])->middleware('auth');
 Route::post('/user/update_pass/', [UserController::class, 'userUpdatePass'])->middleware('auth');

@@ -21,6 +21,7 @@
                 <a href="/user/show/update/" class="btn">Изменить данные пользователя</a>
                 <a href="/user/show/update_pass/" class="btn">Изменить пароль пользователя</a>
                 <a href="/user/show/delete/" class="btn">Удалить пользователя</a>
+                <a href="/user/only-old/" class="btn">Страница для взрослых</a>
 
                 @else
                 <a href="/" class="btn">Главная</a>
