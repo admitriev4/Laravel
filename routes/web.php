@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\YouTubeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,8 @@ Route::get('/', function () {
 Route::get('/registration/', function () {
     return view('registration', ['title' => 'Регистрация']);
 });
+
+Route::get('/youtube/', [YouTubeController::class, 'index']);
 
 Route::get('/user/show/update/', function () {
     return view('user.update', ['title' => 'Изменение данных пользователя']);
