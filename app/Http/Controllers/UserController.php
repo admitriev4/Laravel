@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Queue;
+use App\Jobs\TestJob;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +23,7 @@ class UserController extends Controller
             $auth = $this->model->authorizationUser($request);
             if(!is_string($auth)) {
             $users = $this->model->getList();
+            Queue::push(new TestJob('job работает'));
             return view('user.users', [
                 'title' => "Список пользователей",
                 'users' => $users
@@ -44,6 +47,7 @@ class UserController extends Controller
         $res = $this->model->add($request);
         if(is_bool($res)) {
             $users = $this->model->getList();
+            Queue::push(new TestJob('job работает'));
             return view('user.users', [
                 'title' => "Список пользователей",
                 'users' => $users

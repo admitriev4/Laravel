@@ -58,10 +58,7 @@ class User extends Authenticatable
 
     public function getList()
     {
-        /*$users = DB::table('users')
-            ->select('id', 'name', 'last_name', 'email', 'phone', 'address', 'password', 'remember_token')
-            ->get();*/
-        $users = DB::table('users')->paginate(2);
+        $users = DB::table('users')->paginate(5);
         return $users;
     }
 
@@ -122,6 +119,7 @@ class User extends Authenticatable
                     'remember_token' => $request->_token,
                     'created_at' => $date,
                     'updated_at' => $date,
+                    "age" => 18
                 ]);
                 $user = $this->getUser('email', $request->email);
                 LoginController::login($user[0]->id);
