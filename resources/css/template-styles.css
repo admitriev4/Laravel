@@ -92,6 +92,13 @@ p {
 .img-404 img{
     border-radius: 10px;
 }
+.youtube-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 90%;
+    margin: auto;
+    border: 1px solid red;
+}
 
 
 
