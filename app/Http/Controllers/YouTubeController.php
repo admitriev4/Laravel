@@ -7,9 +7,15 @@ use Illuminate\Http\Request;
 
 class YouTubeController extends Controller
 {
-    public function index(Youtube $service) {
+    public $service;
+    public function __construct()
+    {
+        $this->service = new Youtube();
+    }
+
+    public function index() {
         return view("youtube", [
-            'service' => $service
+            'urls' => $this->service->viewMostPopularVideo()
         ]);
     }
 }

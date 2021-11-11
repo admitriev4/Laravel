@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public $model;
     function __construct()
     {
         $this->model = new User();

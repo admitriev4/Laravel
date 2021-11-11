@@ -22,9 +22,9 @@ Route::get('/', function () {
 Route::get('/registration/', function () {
     return view('registration', ['title' => 'Регистрация']);
 });
-
+/* You tube*/
 Route::get('/youtube/', [YouTubeController::class, 'index']);
-
+/* You tube*/
 Route::get('/user/show/update/', function () {
     return view('user.update', ['title' => 'Изменение данных пользователя']);
 })->middleware('auth');

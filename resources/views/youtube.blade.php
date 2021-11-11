@@ -11,7 +11,12 @@
 </head>
 <body>
 <div class="wrapper">
-    {{$service->main()}}
+    <div class="youtube-container">
+        @foreach($urls as $url)
+            <iframe id="player" type="text/html" width="640" height="360" src="{{$url}}" frameborder="0"></iframe>
+        @endforeach
+    </div>
+
 </div>
 
 </body>
